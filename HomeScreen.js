@@ -90,7 +90,7 @@ const Banner = ({ navigation }) => {
                 <Text style={styles.textChannelContainer}>RENT</Text>
             </View>
             <View style={styles.channelContainer}>
-                <TouchableOpacity onPress={() => navigation.navigate('Details')}><Text>Search Property</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('ListScreen')}><Text>Search Property</Text></TouchableOpacity>
             </View>
         </View>
     )
@@ -102,8 +102,8 @@ var initialElements = ['HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloH
 function HomeScreen({ navigation }) {
 
     return (
-
-        <ScrollView>
+            
+        <ScrollView style={{paddingBottom:16}}>
             <View backgroundColor={'#f5f6f9'}>
                 <Banner navigation={navigation} />
                 <View>

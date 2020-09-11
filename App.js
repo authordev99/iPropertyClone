@@ -12,6 +12,7 @@ import DetailScreen from './DetailScreen';
 import HomeScreen from './HomeScreen';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
+import PropertyListScreen from './PropertyListScreen';
 
 
 const AppNavigator = createStackNavigator(
@@ -23,6 +24,11 @@ const AppNavigator = createStackNavigator(
     },
     Details: {
       screen: DetailScreen, navigationOptions: {
+        headerShown: null,
+      },
+    },
+    ListScreen: {
+      screen: PropertyListScreen, navigationOptions: {
         headerShown: null,
       },
     },
