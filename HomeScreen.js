@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import {
     SafeAreaView,
     StyleSheet,
@@ -20,9 +20,7 @@ import {
     TouchableHighlight,
     FlatList
 } from 'react-native';
-
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Toast from 'react-native-simple-toast';
 
@@ -85,12 +83,16 @@ const Banner = ({ navigation }) => {
     return (
         <View style={styles.homeBanner}>
             <Text style={styles.bannerTitle}>iProperty.com.my</Text>
-            <View style={styles.channelContainer}>
-                <Text style={styles.textChannelContainer}>BUY</Text>
-                <Text style={styles.textChannelContainer}>RENT</Text>
-            </View>
-            <View style={styles.channelContainer}>
-                <TouchableOpacity onPress={() => navigation.navigate('ListScreen')}><Text>Search Property</Text></TouchableOpacity>
+            <View style={styles.cardContainer}>
+                <View style={styles.channelContainer}>
+                    <Text style={styles.textChannelContainer}>BUY</Text>
+                    <Text style={styles.textChannelContainer}>RENT</Text>
+                </View>
+                <View style={styles.lineStyleHorizontal} />
+                <View style={styles.searchContainer}>
+                    <Icon name="search" size={18} />
+                    <TouchableOpacity onPress={() => navigation.navigate('ListScreen')}><Text style={{ marginStart: 8 }}>Search for properties</Text></TouchableOpacity>
+                </View>
             </View>
         </View>
     )
@@ -102,43 +104,49 @@ var initialElements = ['HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloH
 function HomeScreen({ navigation }) {
 
     return (
-            
-        <ScrollView style={{paddingBottom:16}}>
-            <View backgroundColor={'#f5f6f9'}>
-                <Banner navigation={navigation} />
-                <View>
-                    <HeaderList name="News" />
-                    <ListItemImage imageContainer={styles.imageContainer} title="HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello" imageStyle={styles.image} />
-                    <FlatList
-                        data={initialElements}
-                        horizontal={true}
-                        contentContainerStyle={styles.listContainer}
-                        showsHorizontalScrollIndicator={false}
-                        renderItem={
-                            ({ item }) => <TouchableOpacity onPress={() => navigation.navigate('Details')}><ListItemImage imageContainer={styles.imageContainerList} title={item} imageStyle={styles.imageList} /></TouchableOpacity>
-                        }
-                        keyExtractor={(item, index) => index.toString()}
-                    />
-                </View>
+        <Fragment>
+            <StatusBar barStyle='light-content'/>
+            <SafeAreaView style={{ flex: 0, backgroundColor: '#0181C7' }} />
+            <SafeAreaView style={{ flex: 1, backgroundColor: '#f5f6f9' }}>
 
-                <View>
-                    <HeaderList name="Lifestyle" />
-                    <ListItemImage imageContainer={styles.imageContainer} title="HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello" imageStyle={styles.image} />
-                    <FlatList
-                        data={initialElements}
-                        horizontal={true}
-                        contentContainerStyle={styles.listContainer}
-                        showsHorizontalScrollIndicator={false}
-                        renderItem={
-                            ({ item }) => <TouchableOpacity onPress={() => navigation.navigate('Details')}><ListItemImage imageContainer={styles.imageContainerList} title={item} imageStyle={styles.imageList} /></TouchableOpacity>
-                        }
-                        keyExtractor={(item, index) => index.toString()} />
-                </View>
+                <ScrollView style={{ paddingBottom: 16 }}>
+                    <View backgroundColor={'#f5f6f9'}>
+                        <Banner navigation={navigation} />
+                        <View>
+                            <HeaderList name="News" />
+                            <ListItemImage imageContainer={styles.imageContainer} title="HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello" imageStyle={styles.image} />
+                            <FlatList
+                                data={initialElements}
+                                horizontal={true}
+                                contentContainerStyle={styles.listContainer}
+                                showsHorizontalScrollIndicator={false}
+                                renderItem={
+                                    ({ item }) => <TouchableOpacity onPress={() => navigation.navigate('Details')}><ListItemImage imageContainer={styles.imageContainerList} title={item} imageStyle={styles.imageList} /></TouchableOpacity>
+                                }
+                                keyExtractor={(item, index) => index.toString()}
+                            />
+                        </View>
+
+                        <View>
+                            <HeaderList name="Lifestyle" />
+                            <ListItemImage imageContainer={styles.imageContainer} title="HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello" imageStyle={styles.image} />
+                            <FlatList
+                                data={initialElements}
+                                horizontal={true}
+                                contentContainerStyle={styles.listContainer}
+                                showsHorizontalScrollIndicator={false}
+                                renderItem={
+                                    ({ item }) => <TouchableOpacity onPress={() => navigation.navigate('Details')}><ListItemImage imageContainer={styles.imageContainerList} title={item} imageStyle={styles.imageList} /></TouchableOpacity>
+                                }
+                                keyExtractor={(item, index) => index.toString()} />
+                        </View>
 
 
 
-            </View>
-        </ScrollView>
+                    </View>
+                </ScrollView>
+            </SafeAreaView>
+        </Fragment>
 
 
     );
@@ -150,7 +158,6 @@ const styles = StyleSheet.create({
     homeBanner: {
         backgroundColor: '#0181C7',
         padding: 16,
-        paddingTop: 64
     },
     bannerTitle: {
         color: '#fff',
@@ -162,8 +169,22 @@ const styles = StyleSheet.create({
     channelContainer: {
         flexDirection: 'row',
         backgroundColor: '#fff',
-        borderRadius: 4,
         padding: 16
+    },
+    searchContainer: {
+        flexDirection: 'row',
+        backgroundColor: '#fff',
+        padding: 4,
+        padding: 16
+    },
+    cardContainer: {
+        backgroundColor: '#fff',
+        borderRadius: 4,
+        overflow: 'hidden'
+    },
+    lineStyleHorizontal: {
+        borderWidth: 0.5,
+        borderColor: '#b5bbc1'
     },
     textChannelContainer: {
         flex: 1,
@@ -204,14 +225,14 @@ const styles = StyleSheet.create({
     },
     imageList: {
         height: 120,
-        borderTopStartRadius: 4,
-        borderTopEndRadius: 4
+        borderTopLeftRadius: 4,
+        borderTopRightRadius: 4
 
     },
     image: {
         height: 120,
-        borderTopStartRadius: 4,
-        borderTopEndRadius: 4
+        borderTopLeftRadius: 4,
+        borderTopRightRadius: 4
 
     },
     titleImage: {
