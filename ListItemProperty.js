@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { TouchableHighlight } from "react-native-gesture-handler";
 import { SliderBox } from "react-native-image-slider-box";
 
-export default class ListItemProperty extends React.Component {
+export default class ListItemProperty extends Component {
     state = {
         propertyObject: '',
         imagePosition: 1

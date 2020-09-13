@@ -30,23 +30,21 @@ export default class ContactScreen extends Component {
                 <SafeAreaView style={{ flex: 0, backgroundColor: 'white' }} />
                 <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
                     <View style={styles.container}>
+
                         <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
                             <Icon name="close" size={24} color='black' />
                         </TouchableOpacity>
+
                         <View style={styles.contactContainer}>
                             <Image source={{ uri: propertyContact.image != null ? propertyContact.image.thumbnailUrl : (propertyContact.logo != null ? propertyContact.logo.thumbnailUrl : 'https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg') }} style={styles.imageProfile} />
                             <Text>Contact {propertyContact.name}</Text>
                         </View>
 
-
                         <View style={{ flexDirection: 'row', marginTop: 16, justifyContent: 'center' }}>
                             <ContactButton iconName='phone' title='Call' action={this.call} />
                             <ContactButton iconName='comment' title='Message' action={this.message} />
                             <ContactButton iconName='whatsapp' title='Whatsapp' action={this.whatsapp} />
-
-
                         </View>
-
 
                         <CustomTextInput placeholder='Message' value={defaultMessage} />
                         <CustomTextInput placeholder='Name' />
@@ -54,6 +52,7 @@ export default class ContactScreen extends Component {
                         <CustomTextInput placeholder='Phone' />
 
                     </View>
+                    {/* Bottom Agreement */}
                     <View style={styles.agreementContainer}>
                         <Text>By sending, I agree to Your/iProperty.com Malaysia Sdn Bhd's Terms of Use and Privacy Policy including Your Collection., use, disclosure, processing, storage and handling of my personal information; and to receiving direct marketing communcations from You and/or Your Partners.</Text>
                         <TouchableOpacity style={styles.sendButton} onPress={() => this.props.navigation.goBack()}>

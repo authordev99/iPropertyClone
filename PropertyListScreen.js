@@ -1,12 +1,13 @@
 import React, { Component, Fragment } from "react";
-import { Platform, SafeAreaView, StyleSheet, StatusBar, Text, Image, TouchableOpacity, View, FlatList, Button, ActivityIndicator } from "react-native";
+import { Platform, TextInput, SafeAreaView, StyleSheet, StatusBar, Text, Image, TouchableOpacity, View, FlatList, Button, ActivityIndicator } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TouchableHighlight } from "react-native-gesture-handler";
 import ListItemProperty from "./ListItemProperty";
 
 var initialElements = ['Hello', 'Hi', '00', 'Helo', 'Hi', '00', 'Hello', 'Hi', '00']
 
-class PropertyListScreen extends React.Component {
+class PropertyListScreen extends Component {
+
     back = () => {
         this.props.navigation.goBack()
     }
@@ -14,6 +15,20 @@ class PropertyListScreen extends React.Component {
         propertyList: [],
         loading: true
     }
+
+    onSearchChange(text) { 
+        const filterResultList = this.state.filterList.filter(
+            property => {
+                return property.title.indexOf(text) > -1
+            }
+        )
+        
+        console.log(filterResultList)
+        this.setState({
+            propertyList: filterResultList,
+        })
+    }
+
 
     async componentDidMount() {
         fetch("http://demo5943175.mockable.io/property/list")
@@ -27,6 +42,7 @@ class PropertyListScreen extends React.Component {
                 const propertDataList = JSON.parse(JSON.stringify(response.items))
                 this.setState({
                     propertyList: propertDataList,
+                    filterList: propertDataList,
                     loading: false
                 });
             })
@@ -35,33 +51,65 @@ class PropertyListScreen extends React.Component {
             });
     }
 
+    headerRender = () => {
+
+        return (
+            <View style={styles.headerBarContainer}>
+                <View style={styles.headerSearchBarContainer}>
+                    <View style={{ marginStart: 16 }}>
+                        <TouchableOpacity onPress={this.back}>
+                            <Icon name="arrow-left" size={18} styles={{ marginEnd: 16 }} />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.searchBarContainer}>
+                        <View style={{ marginEnd: 8 }}>
+                            <Icon name="search" size={18} />
+                        </View>
+                        <TextInput
+                            placeholder='property name'
+                            styles={{ marginEnd: 8 }}
+                            onChangeText={(text) =>
+
+                                this.onSearchChange(text)
+                            } />
+                    </View>
+                </View>
+                <View style={styles.lineStyleHorizontal} />
+                <FilterAndSorting />
+            </View>
+
+
+        )
+    }
+
+    renderItem = ({ item }) => {
+        return (
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Details', {
+                item
+            })}>
+                <ListItemProperty property={item} />
+            </TouchableOpacity>
+        )
+    }
+
     render() {
+
         return (
             <Fragment>
                 <StatusBar barStyle='dark-content' />
                 <SafeAreaView style={{ flex: 0, backgroundColor: 'white' }} />
                 <SafeAreaView style={{ flex: 1, backgroundColor: '#f5f6f9' }}>
                     <View style={styles.container}>
-                        <View style={styles.headerBarContainer}>
-                            <HeaderBarSearch onClickBack={this.back} />
-                            <View style={styles.lineStyleHorizontal} />
-                            <FilterAndSorting />
-                        </View>
+
                         {this.state.loading ?
                             (
                                 <View style={styles.activityIndicator}><ActivityIndicator /></View>)
                             :
                             <FlatList
                                 data={this.state.propertyList}
-                                renderItem ={
-                                    ({ item }) =>
-                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('Details', {
-                                            item
-                                        })}>
-                                            <ListItemProperty property={item} />
-                                        </TouchableOpacity>
-                                }
-                                keyExtractor={(item, index) => index.toString()} />}
+                                renderItem={this.renderItem}
+                                keyExtractor={item => item.id}
+                                ListHeaderComponent={this.headerRender} />}
 
                     </View>
                 </SafeAreaView>
@@ -70,24 +118,7 @@ class PropertyListScreen extends React.Component {
     }
 }
 
-const HeaderBarSearch = (props) => {
-    return (
 
-        <View style={styles.headerSearchBarContainer}>
-            <View style={{ marginStart: 16 }}>
-                <TouchableOpacity onPress={props.onClickBack}>
-                    <Icon name="arrow-left" size={18} styles={{ marginEnd: 16 }} />
-                </TouchableOpacity>
-            </View>
-            <View style={styles.searchBarContainer}>
-                <View style={{ marginEnd: 8 }}><Icon name="search" size={18} /></View>
-                <Text>Arcoris Soho</Text>
-            </View>
-
-        </View>
-
-    )
-}
 
 const FilterAndSorting = (props) => {
     return (
@@ -157,8 +188,8 @@ const styles = StyleSheet.create({
         borderColor: '#b5bbc1',
     },
     activityIndicator: {
-        flex: 1, 
-        justifyContent: 'center', 
+        flex: 1,
+        justifyContent: 'center',
         alignItems: 'center'
     }
 
