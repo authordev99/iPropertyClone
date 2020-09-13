@@ -1,19 +1,20 @@
 import React, { Component, Fragment } from "react";
-import { Platform, StatusBar, SafeAreaView, StyleSheet, Text, Image, TouchableOpacity, View, FlatList, Button } from "react-native";
+import { Linking, Share, Platform, StatusBar, SafeAreaView, StyleSheet, Text, Image, TouchableOpacity, View, FlatList, Button } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ListItemProperty from "./ListItemProperty";
-import { ScrollView } from "react-native-gesture-handler";
-class DetailScreen extends React.Component {
+import { ScrollView, TouchableHighlight } from "react-native-gesture-handler";
+import { openCall, shareLink, openWhatsapp, openSmsUrl } from "./Utils";
+import { or } from "react-native-reanimated";
+class DetailScreen extends Component {
 
-    back = () => {
+    onBackPressed = () => {
         this.props.navigation.goBack()
-    }
-    state = {
-        item: this.props.navigation.state.params.item,
     }
 
     render() {
-
+        let property = this.props.navigation.state.params.item
+        let contactProperty = checkingContact(property.listers, property.organisations)
+        let phoneNumber = checkingPhoneNumber(property.listers, property.organisations)
 
         return (
             <Fragment>
@@ -24,22 +25,27 @@ class DetailScreen extends React.Component {
                         <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
                             <View>
                                 <View style={styles.headerBarContainer}>
-                                    <HeaderWithIcon onClickBack={this.back} />
+                                    <HeaderWithIcon onClickBack={this.onBackPressed} shareLink={property.shareLink} />
                                 </View>
-                                <ListItemProperty property={this.state.item} isDetailPage={true} />
+                                <ListItemProperty property={property} isDetailPage={true} />
                                 <MortageCalculator />
-                                <AddressAndDescription title={this.state.item.title} />
-                                <PropertyDetails attributes={this.state.item.attributes} />
-                                <PropertyListers listers={this.state.item.listers != null ? this.state.item.listers[0] : null} organisations={this.state.item.organisations[0]} />
+                                <AddressAndDescription title={property.title} />
+                                <PropertyDetails attributes={property.attributes} />
+                                <PropertyListers listers={property.listers != null ? property.listers[0] : null} organisations={property.organisations[0]} />
                             </View>
                         </ScrollView>
 
                         <View style={styles.contactContainer}>
-                            <Text style={styles.contactButton}>Contact</Text>
-                            <View style={styles.whatsappButton}>
-                                <Icon name="whatsapp" size={18} color="#075e54" />
-                                <Text style={{ marginStart: 4 }}>Whatsapp</Text>
-                            </View>
+                            <TouchableOpacity style={styles.contactButton} onPress={() => this.props.navigation.navigate('Contact', { contact: contactProperty , title: property.title, number:phoneNumber})}>
+                                <Text style={styles.contactText}>Contact</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={styles.whatsappButton} onPress={() => openWhatsapp('Hi', phoneNumber)}>
+                                <View style={styles.whatsappButtonContent}>
+                                    <Icon name="whatsapp" size={18} color="#075e54" />
+                                    <Text style={{ marginStart: 4 }}>Whatsapp</Text>
+                                </View>
+                            </TouchableOpacity>
 
                         </View>
                     </View>
@@ -59,7 +65,11 @@ const HeaderWithIcon = (props) => {
                 </TouchableOpacity>
             </View>
             <Text style={styles.headerTitle}>Arcoris Soho</Text>
-            <View style={{ marginStart: 12, marginEnd: 16 }}><Icon name="share" size={18} /></View>
+            <TouchableOpacity onPress={() => shareLink('Hello', props.shareLink)}>
+                <View style={{ marginStart: 12, marginEnd: 16 }}>
+                    <Icon name="share" size={18} />
+                </View>
+            </TouchableOpacity>
             <View style={{ marginStart: 12, marginEnd: 16 }}><Icon name="star" size={18} /></View>
         </View>
 
@@ -114,28 +124,76 @@ const PropertyAttributes = (props) => {
     )
 }
 
-const PropertyListers = (props) => {
-    var propertyListers = props.listers;
-    var propertyOrganisations = props.organisations;
-    return (
-        <View style={[styles.cardColumnContainer, { flexDirection: 'row', alignItems: 'center' }]}>
-            {
-                (propertyListers != null && propertyListers.image != null) || propertyOrganisations.logo ? (<Image source={{ uri: propertyListers != null && propertyListers.image != null ? propertyListers.image.thumbnailUrl : (propertyOrganisations.logo != null ? propertyOrganisations.logo.thumbnailUrl : '') }} style={styles.imageProfile} />) : null
-            }
+class PropertyListers extends Component {
 
-            <View style={{ flex: 1 }}>
-                <Text>{propertyListers != null ? propertyListers.name : propertyOrganisations.name}</Text>
-                {propertyListers != null ? (<Text style={{ fontSize: 12 }}>{propertyOrganisations.name}</Text>) : null}
+
+    checkingProfilePicture(listers, organisations) {
+        if (listers != null && listers.image != null) {
+            return listers.image.thumbnailUrl
+        } else if (organisations.logo != null) {
+            return organisations.logo.thumbnailUrl
+        } else {
+            return "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
+        }
+    }
+
+    render() {
+        let listers = this.props.listers
+        let organisations = this.props.organisations
+        let phoneNumber = checkingPhoneNumber(listers, organisations)
+        let profilePicture = this.checkingProfilePicture(listers, organisations)
+        return (
+            <View style={[styles.cardColumnContainer, { flexDirection: 'row', alignItems: 'center' }]}>
+                {
+                    profilePicture != null ? (
+                        <Image source={{ uri: profilePicture }} style={styles.imageProfile} />) : null
+                }
+
+                <View style={{ flex: 1 }}>
+                    <Text>{listers != null ? listers.name : organisations.name}</Text>
+                    {listers != null ? (<Text style={{ fontSize: 12 }}>{organisations.name}</Text>) : null}
+                </View>
+                {
+                    phoneNumber != null ? (
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <TouchableOpacity onPress={() => openSmsUrl(phoneNumber)}>
+                                <View style={{ marginStart: 8, marginEnd: 8 }}>
+                                    <Icon name="comment" size={24} color="#075e54" />
+                                </View>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={() => openCall(phoneNumber)}>
+                                <View style={{ marginStart: 8, marginEnd: 8 }}>
+                                    <Icon name="phone" size={24} color="#075e54" />
+                                </View>
+                            </TouchableOpacity>
+                        </View>) : null
+                }
             </View>
-            <View style={{ marginStart: 8, marginEnd: 8 }}><Icon name="comment" size={24} color="#075e54" /></View>
-            <View style={{ marginStart: 8, marginEnd: 8 }}><Icon name="phone" size={24} color="#075e54" /></View>
-
-
-
-
-        </View>
-    )
+        )
+    }
 }
+
+export function checkingPhoneNumber(listers, organisations) {
+    if (listers != null && listers.contact != null) {
+        return listers.contact.phones[0].number
+    } else if (organisations != null && organisations.contact != null) {
+        return organisations.contact.phones[0].number
+    } else {
+        return null
+    }
+}
+export function  checkingContact(listers, organisations) {
+    if (listers != null && listers[0].contact != null) {
+        return listers[0]
+    } else if (organisations != null && organisations[0].contact != null) {
+        return organisations[0]
+    } else {
+        return null
+    }
+}
+
+
 
 
 const styles = StyleSheet.create({
@@ -228,24 +286,30 @@ const styles = StyleSheet.create({
         padding: 8,
         borderRadius: 8,
         justifyContent: 'center',
-        textAlign: 'center',
+
         marginEnd: 8,
         flex: 1,
-        color: 'white',
+
         backgroundColor: '#0181C7',
         overflow: 'hidden'
     },
+    contactText: {
+        color: 'white',
+        textAlign: 'center',
+    },
     whatsappButton: {
-        flexDirection: 'row',
         padding: 8,
         borderRadius: 8,
-        textAlign: 'center',
-        justifyContent: 'center',
         marginEnd: 8,
         flex: 1,
         borderWidth: 1,
         borderColor: '#b5bbc1',
 
+    },
+    whatsappButtonContent: {
+        flexDirection: 'row',
+        textAlign: 'center',
+        justifyContent: 'center',
     },
     imageProfile: {
         width: 44,

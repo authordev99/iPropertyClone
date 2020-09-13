@@ -16,19 +16,6 @@ class PropertyListScreen extends React.Component {
     }
 
     async componentDidMount() {
-        //Have a try and catch block for catching errors.
-        // try {
-        //     //Assign the promise unresolved first then get the data using the json method. 
-        //     const propertyListApiCall = await fetch('http://demo5943175.mockable.io/property/list');
-        //     const propertDataList = await propertyListApiCall.json();
-        //     this.setState({propertyList: JSON.parse(JSON.stringify(propertDataList.items)), loading: false});
-
-
-        //     console.warn("Error fetching data1-----------", item[0].kind);
-        // } catch(err) {
-        //     console.warn("Error fetching data-----------", err);
-        // }
-
         fetch("http://demo5943175.mockable.io/property/list")
             .then(res => {
                 if (!res.ok) {
@@ -65,11 +52,13 @@ class PropertyListScreen extends React.Component {
                                 <View style={styles.activityIndicator}><ActivityIndicator /></View>)
                             :
                             <FlatList
-                                data = {this.state.propertyList}
-                                renderItem = {
+                                data={this.state.propertyList}
+                                renderItem ={
                                     ({ item }) =>
-                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('Details', {item})}>
-                                            <ListItemProperty property={item} isDetailPage={false} />
+                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('Details', {
+                                            item
+                                        })}>
+                                            <ListItemProperty property={item} />
                                         </TouchableOpacity>
                                 }
                                 keyExtractor={(item, index) => index.toString()} />}

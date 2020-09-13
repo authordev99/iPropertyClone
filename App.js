@@ -13,6 +13,7 @@ import HomeScreen from './HomeScreen';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import PropertyListScreen from './PropertyListScreen';
+import ContactScreen from './ContactScreen';
 
 
 const AppNavigator = createStackNavigator(
@@ -29,6 +30,11 @@ const AppNavigator = createStackNavigator(
     },
     ListScreen: {
       screen: PropertyListScreen, navigationOptions: {
+        headerShown: null,
+      },
+    },
+    Contact: {
+      screen: ContactScreen, navigationOptions: {
         headerShown: null,
       },
     },
