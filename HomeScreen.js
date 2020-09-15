@@ -24,11 +24,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Toast from 'react-native-simple-toast';
 
 import {
-    Header,
-    LearnMoreLinks,
     Colors,
-    DebugInstructions,
-    ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
 class HomeScreen extends Component {

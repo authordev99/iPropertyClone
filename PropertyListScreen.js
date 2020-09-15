@@ -1,28 +1,30 @@
-import React, { Component, Fragment } from "react";
+import React, { Component, Fragment, useRef, useState } from "react";
 import { Platform, TextInput, SafeAreaView, StyleSheet, StatusBar, Text, Image, TouchableOpacity, View, FlatList, Button, ActivityIndicator } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { TouchableHighlight } from "react-native-gesture-handler";
 import ListItemProperty from "./ListItemProperty";
-
-var initialElements = ['Hello', 'Hi', '00', 'Helo', 'Hi', '00', 'Hello', 'Hi', '00']
+import RBSheet from "react-native-raw-bottom-sheet";
+import { showToast } from "./Utils";
 
 class PropertyListScreen extends Component {
 
     back = () => {
         this.props.navigation.goBack()
     }
+    filter = () => {
+        this.props.navigation.navigate('Filter')
+    }
     state = {
         propertyList: [],
         loading: true
     }
 
-    onSearchChange(text) { 
+    onSearchChange(text) {
         const filterResultList = this.state.filterList.filter(
             property => {
                 return property.title.indexOf(text) > -1
             }
         )
-        
+
         console.log(filterResultList)
         this.setState({
             propertyList: filterResultList,
@@ -75,7 +77,7 @@ class PropertyListScreen extends Component {
                     </View>
                 </View>
                 <View style={styles.lineStyleHorizontal} />
-                <FilterAndSorting />
+                <FilterAndSorting onPress={this.filter} />
             </View>
 
 
@@ -103,13 +105,17 @@ class PropertyListScreen extends Component {
 
                         {this.state.loading ?
                             (
-                                <View style={styles.activityIndicator}><ActivityIndicator /></View>)
+                                <View style={styles.activityIndicator}>
+                                    <ActivityIndicator color='#0181C7' size='large' />
+                                </View>)
                             :
                             <FlatList
                                 data={this.state.propertyList}
                                 renderItem={this.renderItem}
                                 keyExtractor={item => item.id}
                                 ListHeaderComponent={this.headerRender} />}
+
+
 
                     </View>
                 </SafeAreaView>
@@ -121,19 +127,60 @@ class PropertyListScreen extends Component {
 
 
 const FilterAndSorting = (props) => {
-    return (
+    const refRBSheet = useRef();
+    const sortOption = ['Default', 'Recent', 'Lowest Price', 'Highest Price', 'Built-up Size (large to small)', 'Built-up Size (small to large)']
+    const [state, setState] = useState({
+        sortSelectedOption: 'Default'
+    })
+    function selectSortOption(selected) {
+        setState(state => ({ ...state, sortSelectedOption: selected }))
+    }
 
+    const shortItemRender = ({ item }) => {
+        return (
+            <TouchableOpacity onPress={() => {
+                refRBSheet.current.close()
+                selectSortOption(item)
+                }
+            }>
+                <Text style={state.sortSelectedOption != item ? { fontSize: 16, padding: 16 } : { fontSize: 16, padding: 16, color: '#0181C7' }}>{item}</Text>
+            </TouchableOpacity>
+        )
+    }
+    const shortHeaderRender = () => {
+        return (
+            <Text style={{ padding: 16, color: '#b5bbc1' }}>Sort By</Text>
+        )
+    }
+
+    return (
         <View style={styles.headerSearchBarContainer}>
-            <View style={styles.filterSortingContainer}>
+            <TouchableOpacity style={styles.filterSortingContainer} onPress={props.onPress}>
                 <Icon name="filter" size={18} />
                 <Text style={{ marginStart: 8 }}>FILTER</Text>
-            </View>
+            </TouchableOpacity>
             <View style={styles.lineStyleVertical} />
-            <View style={styles.filterSortingContainer}>
+            <TouchableOpacity style={styles.filterSortingContainer} onPress={() => refRBSheet.current.open()} >
                 <Icon name="sort" size={18} />
                 <Text style={{ marginStart: 8 }}>SORT</Text>
-            </View>
+            </TouchableOpacity>
 
+            <RBSheet
+                ref={refRBSheet}
+                height={414}
+                openDuration={250}
+                customStyles={{
+                    container: {
+                        justifyContent: "center",
+
+                    }
+                }}>
+                <FlatList
+                    data={sortOption}
+                    renderItem={shortItemRender}
+                    keyExtractor={item => item.id}
+                    ListHeaderComponent={shortHeaderRender} />
+            </RBSheet>
         </View>
 
     )

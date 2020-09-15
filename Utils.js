@@ -1,5 +1,5 @@
 import { Platform, Linking, Share } from "react-native";
-
+import Toast from 'react-native-simple-toast';
 
 function openUrl(url) {
     return Linking.openURL(url);
@@ -32,3 +32,7 @@ export function openSmsUrl(phone) {
 function getSMSDivider() {
     return Platform.OS === "ios" ? "&" : "?";
 }
+
+export function showToast (message) {
+    Toast.show(message, Toast.LONG);
+};

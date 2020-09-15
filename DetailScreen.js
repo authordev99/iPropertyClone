@@ -4,7 +4,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import ListItemProperty from "./ListItemProperty";
 import { ScrollView, TouchableHighlight } from "react-native-gesture-handler";
 import { openCall, shareLink, openWhatsapp, openSmsUrl } from "./Utils";
-import { or } from "react-native-reanimated";
 class DetailScreen extends Component {
 
     onBackPressed = () => {
@@ -12,7 +11,7 @@ class DetailScreen extends Component {
     }
 
     render() {
-        let property = this.props.navigation.state.params.item
+        let property = this.props.route.params.item
         let contactProperty = checkingContact(property.listers, property.organisations)
         let phoneNumber = checkingPhoneNumber(property.listers, property.organisations)
 
@@ -64,7 +63,7 @@ const HeaderWithIcon = (props) => {
                     <Icon name="arrow-left" size={18} styles={{ marginEnd: 16 }} />
                 </TouchableOpacity>
             </View>
-            <Text style={styles.headerTitle}>Arcoris Soho</Text>
+            <View style={styles.headerTitle}></View>
             <TouchableOpacity onPress={() => shareLink('Hello', props.shareLink)}>
                 <View style={{ marginStart: 12, marginEnd: 16 }}>
                     <Icon name="share" size={18} />
