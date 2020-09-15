@@ -28,21 +28,12 @@ export default class ListItemProperty extends Component {
         return priceText
     }
 
-    checkingCover(property, state) {
+    getImageList(property) {
         var imageList = []
-        if (state.isDetails) {
-            const thumbnailUrl = property.medias.map((media) =>
-                media.thumbnailUrl
-            )
-            imageList = thumbnailUrl;
-        } else {
-            if (property.cover != null) {
-                imageList = [property.cover.thumbnailUrl]
-            } else {
-                imageList = [property.medias[0].thumbnailUrl]
-            }
-
-        }
+        const thumbnailUrl = property.medias.map((media) =>
+            media.thumbnailUrl
+        )
+        imageList = thumbnailUrl;
         return imageList
 
     }
@@ -57,7 +48,7 @@ export default class ListItemProperty extends Component {
 
     render() {
         let property = this.state.propertyObject
-        let imageList = this.checkingCover(property, this.state)
+        let imageList = this.getImageList(property, this.state)
         return (
             <View style={styles.propertyContainer}>
                 <View style={{ position: 'relative' }}>

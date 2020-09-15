@@ -1,7 +1,7 @@
 import { Platform, Linking, Share } from "react-native";
 import Toast from 'react-native-simple-toast';
 
-function openUrl(url) {
+export function openUrl(url) {
     return Linking.openURL(url);
 }
 

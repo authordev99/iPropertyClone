@@ -44,9 +44,9 @@ const BottomNavigation = () => (
         }}
         component={HomeStack} />
       <Tab.Screen
-        name="Saved Me"
+        name="Saved"
         options={{
-          tabBarLabel: 'Saved Me',
+          tabBarLabel: 'Saved',
           tabBarIcon: ({ color, size }) => (
             <Icon name="star" size={size} color={color} />
           ),

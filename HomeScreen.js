@@ -14,7 +14,7 @@ import {
     View,
     Text,
     StatusBar,
-    ToastAndroid,
+    ActivityIndicator,
     TouchableOpacity,
     Image,
     TouchableHighlight,
@@ -26,11 +26,74 @@ import Toast from 'react-native-simple-toast';
 import {
     Colors,
 } from 'react-native/Libraries/NewAppScreen';
+import { openUrl } from './Utils';
 
 class HomeScreen extends Component {
 
     state = {
-        selectedOption: ''
+        newsList: [],
+        newsHeadline: '',
+        lifestyleList: [],
+        lifestyleHeadline: '',
+        loadingNews: true,
+        loadingLifestyle: true
+    }
+
+    getNewsList()
+    {
+        fetch("http://demo6036197.mockable.io/news/list")
+        .then(res => {
+            if (!res.ok) {
+                throw new Error(res.status);
+            }
+            return res.json();
+        })
+        .then(response => {
+            const newsDataList = JSON.parse(JSON.stringify(response.items))
+            const firstData = newsDataList[0]
+            {/* delete first data*/ }
+            newsDataList.splice(0, 1)
+
+            this.setState({
+                newsHeadline: firstData,
+                newsList: newsDataList,
+                loadingNews: false
+            });
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
+
+    getLifestyleList()
+    {
+        fetch("http://demo4741066.mockable.io/lifestyle/list")
+        .then(res => {
+            if (!res.ok) {
+                throw new Error(res.status);
+            }
+            return res.json();
+        })
+        .then(response => {
+            const lifestyleDataList = JSON.parse(JSON.stringify(response.items))
+            const firstData = lifestyleDataList[0]
+            {/* delete first data*/ }
+            lifestyleDataList.splice(0, 1)
+
+            this.setState({
+                lifestyleHeadline: firstData,
+                lifestyleList: lifestyleDataList,
+                loadingLifestyle: false
+            });
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
+
+    async componentDidMount() {
+       this.getNewsList()
+       this.getLifestyleList()
     }
 
     render() {
@@ -43,34 +106,55 @@ class HomeScreen extends Component {
                     <ScrollView style={{ paddingBottom: 16 }}>
                         <View backgroundColor={'#f5f6f9'}>
                             <Banner navigation={this.props.navigation} />
-                            <View>
-                                <HeaderList name="News" />
-                                <ListItemImage imageContainer={styles.imageContainer} title="HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello" imageStyle={styles.image} />
-                                <FlatList
-                                    data={initialElements}
-                                    horizontal={true}
-                                    contentContainerStyle={styles.listContainer}
-                                    showsHorizontalScrollIndicator={false}
-                                    renderItem={
-                                        ({ item }) => <TouchableOpacity onPress={() => this.props.navigation.navigate('Details')}><ListItemImage imageContainer={styles.imageContainerList} title={item} imageStyle={styles.imageList} /></TouchableOpacity>
-                                    }
-                                    keyExtractor={(item, index) => index.toString()}
-                                />
-                            </View>
+                          
+                            {this.state.loadingNews ?
+                                (
+                                    <View style={{marginTop:16}}>
+                                        <ActivityIndicator color='#0181C7' size='large' />
+                                    </View>)
+                                :
+                                <View>
+                                    <HeaderList name="News" />
+                                    <ListItemImage
+                                        imageContainer={styles.imageContainer}
+                                        itemChannel={this.state.newsHeadline}
+                                        imageStyle={styles.image} />
+                                    <FlatList
+                                        data={this.state.newsList}
+                                        horizontal={true}
+                                        contentContainerStyle={styles.listContainer}
+                                        showsHorizontalScrollIndicator={false}
+                                        renderItem={
+                                            ({ item }) => <TouchableOpacity><ListItemImage imageContainer={styles.imageContainerList} itemChannel={item} imageStyle={styles.imageList} /></TouchableOpacity>
+                                        }
+                                        keyExtractor={(item) => item.title}
+                                    />
+                                </View>}
 
-                            <View>
-                                <HeaderList name="Lifestyle" />
-                                <ListItemImage imageContainer={styles.imageContainer} title="HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello" imageStyle={styles.image} />
-                                <FlatList
-                                    data={initialElements}
-                                    horizontal={true}
-                                    contentContainerStyle={styles.listContainer}
-                                    showsHorizontalScrollIndicator={false}
-                                    renderItem={
-                                        ({ item }) => <TouchableOpacity onPress={() => navigation.navigate('Details')}><ListItemImage imageContainer={styles.imageContainerList} title={item} imageStyle={styles.imageList} /></TouchableOpacity>
-                                    }
-                                    keyExtractor={(item, index) => index.toString()} />
-                            </View>
+                                {this.state.loadingLifestyle ?
+                                (
+                                    <View style={{marginTop:16}}>
+                                        <ActivityIndicator color='#0181C7' size='large' />
+                                    </View>)
+                                :
+                                <View>
+                                    <HeaderList name="Lifestyle" />
+                                    <ListItemImage
+                                        imageContainer={styles.imageContainer}
+                                        itemChannel={this.state.lifestyleHeadline}
+                                        imageStyle={styles.image} />
+                                    <FlatList
+                                        data={this.state.lifestyleList}
+                                        horizontal={true}
+                                        contentContainerStyle={styles.listContainer}
+                                        showsHorizontalScrollIndicator={false}
+                                        renderItem={
+                                            ({ item }) => <TouchableOpacity><ListItemImage imageContainer={styles.imageContainerList} itemChannel={item} imageStyle={styles.imageList} /></TouchableOpacity>
+                                        }
+                                        keyExtractor={(item) => item.title}
+                                    />
+                                </View>}
+
 
 
 
@@ -85,39 +169,15 @@ class HomeScreen extends Component {
 
 };
 
-const showToast = () => {
-    Toast.show('This is a long toast.', Toast.LONG);
-};
 
-const ListItem = (props) => {
+const ListItemImage = ({itemChannel,imageStyle,imageContainer}) => {
     return (
-
-        <View style={styles.sectionContainer}>
-            <TouchableHighlight
-                style={[styles.circle, { borderColor: 'white', borderWidth: 1 }]}>
-                <Image source={{ uri: "https://www.t-nation.com/system/publishing/articles/10005529/original/6-Reasons-You-Should-Never-Open-a-Gym.png" }} style={styles.circle} />
-            </TouchableHighlight>
-            <View style={styles.profileContainer}>
-                <Text style={styles.sectionTitle}>{props.name}</Text>
-                <Text style={styles.sectionDescription}>
-                    Edit <Text style={styles.highlight}>App.js</Text> to change this
-                    screen and then come back to see your edits.
-                </Text>
+        <TouchableOpacity onPress={() => openUrl(itemChannel.link)}>
+            <View style={imageContainer}>
+                <Image source={{ uri: itemChannel.image }} style={imageStyle} />
+                <Text numberOfLines={3} style={styles.titleImage}>{itemChannel.title}</Text>
             </View>
-
-            <TouchableOpacity onPress={() => showToast()}><Text style={styles.detailIcon}>Edit</Text></TouchableOpacity>
-
-        </View>
-    )
-}
-
-const ListItemImage = (props) => {
-    return (
-
-        <View style={props.imageContainer}>
-            <Image source={{ uri: "https://www.t-nation.com/system/publishing/articles/10005529/original/6-Reasons-You-Should-Never-Open-a-Gym.png" }} style={props.imageStyle} />
-            <Text numberOfLines={3} style={styles.titleImage}>{props.title}</Text>
-        </View>
+        </TouchableOpacity>
     )
 }
 
@@ -136,11 +196,10 @@ class Banner extends Component {
     state = {
         channelBuySelected: true
     }
-    
-    updateChannel(boolean)
-    {
+
+    updateChannel(boolean) {
         this.setState({
-            channelBuySelected : boolean
+            channelBuySelected: boolean
         })
     }
 
@@ -150,11 +209,11 @@ class Banner extends Component {
                 <Text style={styles.bannerTitle}>iProperty.com.my</Text>
                 <View style={styles.cardContainer}>
                     <View style={styles.channelContainer}>
-                        <TouchableOpacity style={ this.state.channelBuySelected ? styles.textChannelActiveContainer : styles.textChannelInactiveContainer} onPress={()=>this.updateChannel(true)}>
+                        <TouchableOpacity style={this.state.channelBuySelected ? styles.textChannelActiveContainer : styles.textChannelInactiveContainer} onPress={() => this.updateChannel(true)}>
                             <Text style={this.state.channelBuySelected ? styles.textChannelActive : styles.textChannelInactive}>BUY</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={this.state.channelBuySelected ? styles.textChannelInactiveContainer :styles.textChannelActiveContainer } onPress={()=>this.updateChannel(false)}>
+                        <TouchableOpacity style={this.state.channelBuySelected ? styles.textChannelInactiveContainer : styles.textChannelActiveContainer} onPress={() => this.updateChannel(false)}>
                             <Text style={this.state.channelBuySelected ? styles.textChannelInactive : styles.textChannelActive}>RENT</Text>
                         </TouchableOpacity>
                     </View>
