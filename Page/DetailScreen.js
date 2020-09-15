@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from "react";
-import { Linking, Share, Platform, StatusBar, SafeAreaView, StyleSheet, Text, Image, TouchableOpacity, View, FlatList, Button } from "react-native";
+import { StatusBar, SafeAreaView, StyleSheet, Text, Image, TouchableOpacity, View, FlatList, Button } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import ListItemProperty from "./ListItemProperty";
-import { ScrollView, TouchableHighlight } from "react-native-gesture-handler";
-import { openCall, shareLink, openWhatsapp, openSmsUrl } from "./Utils";
+import ListItemProperty from "../Component/ListItemProperty";
+import { ScrollView } from "react-native-gesture-handler";
+import { openCall, shareLink, openWhatsapp, openSmsUrl } from "../Utils/Utils";
 class DetailScreen extends Component {
 
     onBackPressed = () => {

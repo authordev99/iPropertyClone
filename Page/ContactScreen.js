@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
-import { Linking, TextInput, Platform, StatusBar, SafeAreaView, StyleSheet, Text, Image, TouchableOpacity, View, FlatList, Button } from "react-native";
+import { TextInput, StatusBar, SafeAreaView, StyleSheet, Text, Image, TouchableOpacity, View, FlatList, Button } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { openCall, openWhatsapp, openSmsUrl } from "./Utils";
+import { openCall, openWhatsapp, openSmsUrl } from "../Utils/Utils";
 
 export default class ContactScreen extends Component {
     state = {

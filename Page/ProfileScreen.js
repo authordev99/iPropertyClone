@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { StyleSheet, SafeAreaView, TouchableOpacity,StatusBar, Text, Image, FlatList, View } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { showToast } from "./Utils";
+import { showToast } from "../Utils/Utils";
 
 const menuList = ['Mortage Calculator', 'Help & Feedback','Rate Us','Setting']
 

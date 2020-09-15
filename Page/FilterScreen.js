@@ -2,7 +2,7 @@ import React, { Fragment, Component, useContext, useState, useEffect } from 'rea
 import { Text, Button, StatusBar, SafeAreaView, TouchableOpacity, View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { SegmentedControls } from 'react-native-radio-buttons'
-import GlobalState from './contexts/GlobalState';
+import GlobalState from '../Utils/GlobalState';
 import { ScrollView } from 'react-native-gesture-handler';
 
 export default function FilterScreen({ navigation }) {

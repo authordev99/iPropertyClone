@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Platform, StyleSheet, Text, Image, TouchableOpacity, View, FlatList, Button } from "react-native";
+import {StyleSheet, Text, View } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { TouchableHighlight } from "react-native-gesture-handler";
 import { SliderBox } from "react-native-image-slider-box";
 
 export default class ListItemProperty extends Component {

@@ -3,14 +3,14 @@ import { Button, Text, View, StyleSheet } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import PropertyListScreen from './PropertyListScreen';
+import PropertyListScreen from './Page/PropertyListScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import HomeScreen from './HomeScreen';
-import FilterScreen from './FilterScreen'
-import ContactScreen from './ContactScreen';
-import DetailsScreen from './DetailScreen';
-import SavedPropertyScreen from './SavedPropertyScreen';
-import ProfileScreen from './ProfileScreen';
+import HomeScreen from './Page/HomeScreen';
+import FilterScreen from './Page/FilterScreen'
+import ContactScreen from './Page/ContactScreen';
+import DetailsScreen from './Page/DetailScreen';
+import SavedPropertyScreen from './Page/SavedPropertyScreen';
+import ProfileScreen from './Page/ProfileScreen';
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()

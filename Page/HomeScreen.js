@@ -17,16 +17,14 @@ import {
     ActivityIndicator,
     TouchableOpacity,
     Image,
-    TouchableHighlight,
     FlatList
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Toast from 'react-native-simple-toast';
 
 import {
     Colors,
 } from 'react-native/Libraries/NewAppScreen';
-import { openUrl } from './Utils';
+import { openUrl } from '../Utils/Utils';
 
 class HomeScreen extends Component {
 

@@ -1,7 +1,7 @@
 import React, { Component, Fragment, useRef, useState } from "react";
 import { TextInput, SafeAreaView, StyleSheet, StatusBar, Text, TouchableOpacity, View, FlatList, Button, ActivityIndicator } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import ListItemProperty from "./ListItemProperty";
+import ListItemProperty from "../Component/ListItemProperty";
 import RBSheet from "react-native-raw-bottom-sheet";
 
 class PropertyListScreen extends Component {
