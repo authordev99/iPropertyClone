@@ -11,6 +11,7 @@ import ContactScreen from './Page/ContactScreen';
 import DetailsScreen from './Page/DetailScreen';
 import SavedPropertyScreen from './Page/SavedPropertyScreen';
 import ProfileScreen from './Page/ProfileScreen';
+import NewsLifestyleList from './Page/NewsLifestyleList';
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
@@ -25,6 +26,7 @@ const homeOptions = {
 const HomeStack = () => (
     <Stack.Navigator {...homeOptions}>
         <Stack.Screen name="Home" component={HomeScreen}/>
+        <Stack.Screen name="NewsLifestyleList" component={NewsLifestyleList} />
         <Stack.Screen name="ListScreen" component={PropertyListScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} />
         <Stack.Screen name="Contact" component={ContactScreen} />

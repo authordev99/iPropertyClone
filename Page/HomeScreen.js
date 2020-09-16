@@ -31,67 +31,77 @@ class HomeScreen extends Component {
     state = {
         newsList: [],
         newsHeadline: '',
+        newsHomeList:[],
         lifestyleList: [],
         lifestyleHeadline: '',
+        lifestyleHomeList:[],
         loadingNews: true,
         loadingLifestyle: true
     }
 
-    getNewsList()
-    {
+    getNewsList() {
         fetch("http://demo6036197.mockable.io/news/list")
-        .then(res => {
-            if (!res.ok) {
-                throw new Error(res.status);
-            }
-            return res.json();
-        })
-        .then(response => {
-            const newsDataList = JSON.parse(JSON.stringify(response.items))
-            const firstData = newsDataList[0]
-            {/* delete first data*/ }
-            newsDataList.splice(0, 1)
-
-            this.setState({
-                newsHeadline: firstData,
-                newsList: newsDataList,
-                loadingNews: false
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(res.status);
+                }
+                return res.json();
+            })
+            .then(response => {
+                const newsDataList = JSON.parse(JSON.stringify(response.items))
+                const newsHomeList = newsDataList.slice(0)
+                newsHomeList.splice(0, 1)
+                const firstData = newsDataList[0]
+                {/* delete first data*/ }
+              
+               
+                this.setState({
+                    newsHeadline: firstData,
+                    newsList: newsDataList,
+                    newsHomeList : newsHomeList,
+                    loadingNews: false
+                });
+            })
+            .catch(error => {
+                console.log(error);
             });
-        })
-        .catch(error => {
-            console.log(error);
-        });
     }
 
-    getLifestyleList()
-    {
+    getLifestyleList() {
         fetch("http://demo4741066.mockable.io/lifestyle/list")
-        .then(res => {
-            if (!res.ok) {
-                throw new Error(res.status);
-            }
-            return res.json();
-        })
-        .then(response => {
-            const lifestyleDataList = JSON.parse(JSON.stringify(response.items))
-            const firstData = lifestyleDataList[0]
-            {/* delete first data*/ }
-            lifestyleDataList.splice(0, 1)
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(res.status);
+                }
+                return res.json();
+            })
+            .then(response => {
+                const lifestyleDataList = JSON.parse(JSON.stringify(response.items))
+                const lifestyleHomeList = lifestyleDataList.slice(0)
+                lifestyleHomeList.splice(0, 1)
+                const firstData = lifestyleDataList[0]
+                {/* delete first data*/ }
+               
 
-            this.setState({
-                lifestyleHeadline: firstData,
-                lifestyleList: lifestyleDataList,
-                loadingLifestyle: false
+                this.setState({
+                    lifestyleHeadline: firstData,
+                    lifestyleList: lifestyleDataList,
+                    lifestyleHomeList:lifestyleHomeList,
+                    loadingLifestyle: false
+                });
+            })
+            .catch(error => {
+                console.log(error);
             });
-        })
-        .catch(error => {
-            console.log(error);
-        });
+    }
+
+    more = (title, list) => {
+        this.props.navigation.navigate('NewsLifestyleList', toolbarTitle = title, items = list)
     }
 
     async componentDidMount() {
-       this.getNewsList()
-       this.getLifestyleList()
+        this.getNewsList()
+        this.getLifestyleList()
     }
 
     render() {
@@ -104,21 +114,23 @@ class HomeScreen extends Component {
                     <ScrollView style={{ paddingBottom: 16 }}>
                         <View backgroundColor={'#f5f6f9'}>
                             <Banner navigation={this.props.navigation} />
-                          
+
                             {this.state.loadingNews ?
                                 (
-                                    <View style={{marginTop:16}}>
+                                    <View style={{ marginTop: 16 }}>
                                         <ActivityIndicator color='#0181C7' size='large' />
                                     </View>)
                                 :
                                 <View>
-                                    <HeaderList name="News" />
+                                    <HeaderList
+                                        name="News"
+                                        onMoreClicked={() => this.more('News',this.state.newsList)} />
                                     <ListItemImage
                                         imageContainer={styles.imageContainer}
                                         itemChannel={this.state.newsHeadline}
                                         imageStyle={styles.image} />
                                     <FlatList
-                                        data={this.state.newsList}
+                                        data={this.state.newsHomeList}
                                         horizontal={true}
                                         contentContainerStyle={styles.listContainer}
                                         showsHorizontalScrollIndicator={false}
@@ -129,20 +141,20 @@ class HomeScreen extends Component {
                                     />
                                 </View>}
 
-                                {this.state.loadingLifestyle ?
+                            {this.state.loadingLifestyle ?
                                 (
-                                    <View style={{marginTop:16}}>
+                                    <View style={{ marginTop: 16 }}>
                                         <ActivityIndicator color='#0181C7' size='large' />
                                     </View>)
                                 :
                                 <View>
-                                    <HeaderList name="Lifestyle" />
+                                    <HeaderList name="Lifestyle" onMoreClicked={() => this.more('Lifestyle',this.state.lifestyleList)} />
                                     <ListItemImage
                                         imageContainer={styles.imageContainer}
                                         itemChannel={this.state.lifestyleHeadline}
                                         imageStyle={styles.image} />
                                     <FlatList
-                                        data={this.state.lifestyleList}
+                                        data={this.state.lifestyleHomeList}
                                         horizontal={true}
                                         contentContainerStyle={styles.listContainer}
                                         showsHorizontalScrollIndicator={false}
@@ -168,7 +180,7 @@ class HomeScreen extends Component {
 };
 
 
-const ListItemImage = ({itemChannel,imageStyle,imageContainer}) => {
+const ListItemImage = ({ itemChannel, imageStyle, imageContainer }) => {
     return (
         <TouchableOpacity onPress={() => openUrl(itemChannel.link)}>
             <View style={imageContainer}>
@@ -185,7 +197,9 @@ const HeaderList = (props) => {
     return (
         <View style={styles.headerList}>
             <Text style={styles.headerTitle}>{props.name}</Text>
-            <Text style={styles.headerMore}>More</Text>
+            <TouchableOpacity onPress={props.onMoreClicked}>
+                <Text style={styles.headerMore}>More</Text>
+            </TouchableOpacity>
         </View>
     )
 }
