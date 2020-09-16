@@ -1,14 +1,16 @@
 import React, { Fragment } from "react";
-import { StyleSheet, StatusBar, Text, TouchableOpacity, View} from "react-native";
+import { StyleSheet, StatusBar, Text, TouchableOpacity, View } from "react-native";
+import { FocusAwareStatusBar } from "../Utils/Utils";
+
 
 export default function SavedPropertyScreen() {
     return (
         <Fragment>
-            <StatusBar barStyle='dark-content' />
+            <FocusAwareStatusBar backgroundColor='transparent' barStyle='dark-content' />
             <View style={styles.container}>
                 <Text>Saved Properties</Text>
                 <Text>You mush be logged in to save properties</Text>
-                <TouchableOpacity style={styles.sendButton} onPress={()=>alert('Login')}>
+                <TouchableOpacity style={styles.sendButton} onPress={() => alert('Login')}>
                     <Text style={styles.sendButtonText}>LOG IN</Text>
                 </TouchableOpacity>
             </View>
@@ -26,8 +28,8 @@ const styles = StyleSheet.create({
     sendButton: {
         paddingTop: 12,
         paddingBottom: 12,
-        paddingStart:32,
-        paddingEnd:32,
+        paddingStart: 32,
+        paddingEnd: 32,
         borderRadius: 4,
         justifyContent: 'center',
         marginTop: 16,

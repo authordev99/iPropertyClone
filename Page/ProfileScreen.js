@@ -2,14 +2,14 @@ import React, { Fragment } from "react";
 import { StyleSheet, SafeAreaView, TouchableOpacity,StatusBar, Text, Image, FlatList, View } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { showToast } from "../Utils/Utils";
+import { showToast, FocusAwareStatusBar } from "../Utils/Utils";
 
 const menuList = ['Mortage Calculator', 'Help & Feedback','Rate Us','Setting']
 
 export default function ProfileScreen() {
     return (
         <Fragment>
-            <StatusBar barStyle='dark-content' />
+          <FocusAwareStatusBar backgroundColor='white' barStyle='dark-content' />
             <SafeAreaView style={{ flex: 0, backgroundColor: 'white' }} />
             <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
                 <View style={styles.container}>

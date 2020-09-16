@@ -70,7 +70,6 @@ class PropertyListScreen extends Component {
                             placeholder='property name'
                             styles={{ marginEnd: 8 }}
                             onChangeText={(text) =>
-
                                 this.onSearchChange(text)
                             } />
                     </View>
@@ -97,7 +96,7 @@ class PropertyListScreen extends Component {
 
         return (
             <Fragment>
-                <StatusBar barStyle='dark-content' />
+                <StatusBar barStyle='dark-content' backgroundColor='white' />
                 <SafeAreaView style={{ flex: 0, backgroundColor: 'white' }} />
                 <SafeAreaView style={{ flex: 1, backgroundColor: '#f5f6f9' }}>
                     <View style={styles.container}>

@@ -1,5 +1,8 @@
-import { Platform, Linking, Share } from "react-native";
+import { Platform, Linking, Share,StatusBar } from "react-native";
 import Toast from 'react-native-simple-toast';
+import { useIsFocused } from '@react-navigation/native';
+import React  from "react";
+
 
 export function openUrl(url) {
     return Linking.openURL(url);
@@ -36,3 +39,9 @@ function getSMSDivider() {
 export function showToast (message) {
     Toast.show(message, Toast.LONG);
 };
+
+export function FocusAwareStatusBar(props) {
+    const isFocused = useIsFocused();
+
+    return isFocused ? <StatusBar {...props} /> : null;
+}
