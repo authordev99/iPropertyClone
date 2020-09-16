@@ -1,7 +1,7 @@
 import React, { Fragment, Component, useContext, useState, useEffect } from 'react';
 import { Text, FlatList, StatusBar, SafeAreaView, TouchableOpacity, View, StyleSheet, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { openUrl } from '../Utils/Utils';
+import { openUrl, FocusAwareStatusBar } from '../Utils/Utils';
 
 export default function NewsLifestyleList({ navigation }) {
 
@@ -21,7 +21,7 @@ export default function NewsLifestyleList({ navigation }) {
 
     return (
         <Fragment>
-            <StatusBar barStyle='dark-content' />
+            <FocusAwareStatusBar backgroundColor='white' barStyle='dark-content' />
             <SafeAreaView style={{ flex: 0, backgroundColor: 'white' }} />
             <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
                 <View style={styles.container}>

@@ -4,8 +4,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { SegmentedControls } from 'react-native-radio-buttons'
 import GlobalState from '../Utils/GlobalState';
 import { ScrollView } from 'react-native-gesture-handler';
+import { FocusAwareStatusBar } from '../Utils/Utils';
 
-export default function FilterScreen({ route,navigation }) {
+export default function FilterScreen({ route, navigation }) {
     const { isBuyFilter } = route.params;
 
     const initialChannel = {
@@ -65,7 +66,7 @@ export default function FilterScreen({ route,navigation }) {
             rent: [rentState, setRentState]
         }}>
             <Fragment>
-                <StatusBar barStyle='dark-content' />
+                <FocusAwareStatusBar backgroundColor='white' barStyle='dark-content' />
                 <SafeAreaView style={{ flex: 0, backgroundColor: 'white' }} />
                 <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
                     <View style={styles.container}>
@@ -92,9 +93,9 @@ export default function FilterScreen({ route,navigation }) {
                     </View>
 
 
-                    <View style={styles.searchButton}>
-                        <Button title='SEARCH' color='white' onPress={()=>navigation.navigate('ListScreen',{isBuyFilter : buyRentState.isBuyChannel})} />
-                    </View>
+                    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ListScreen', { isBuyFilter: buyRentState.isBuyChannel })} >
+                        <Text style={styles.buttonText}>SEARCH</Text>
+                    </TouchableOpacity>
 
                 </SafeAreaView>
             </Fragment>
@@ -175,16 +176,16 @@ function BuyChannelFilter({ isBuyChannel }) {
                         defaultValue={isBuyChannel ? buyState.type : rentState.type}
                     />
 
-                    <View style={{ flexDirection: 'row'}}>
+                    <View style={{ flexDirection: 'row' }}>
                         <SelectOption
-                            title={isBuyChannel ?'Price (RM)' : 'Rent (RM)'}
+                            title={isBuyChannel ? 'Price (RM)' : 'Rent (RM)'}
                             defaultValue={isBuyChannel ? buyState.priceMin : rentState.rentMin}
                         />
                         <SelectOption
                             defaultValue={isBuyChannel ? buyState.priceMax : rentState.rentMax}
                         />
                     </View>
-                    <View style={{ flexDirection: 'row'}}>
+                    <View style={{ flexDirection: 'row' }}>
                         <SelectOption
                             title='Built-up Size(sq.ft)'
                             defaultValue={isBuyChannel ? buyState.sizeMin : rentState.sizeMin}
@@ -384,5 +385,22 @@ const styles = StyleSheet.create({
         marginStart: 14,
         marginEnd: 16,
         bottom: 0
-    }
+    },
+
+    button: {
+        paddingTop: 12,
+        paddingBottom: 12,
+        paddingStart: 32,
+        paddingEnd: 32,
+        borderRadius: 4,
+        margin:16,
+        justifyContent: 'center',
+        backgroundColor: '#0181C7',
+        overflow: 'hidden',
+        bottom: 0
+    },
+    buttonText: {
+        color: 'white',
+        textAlign: 'center',
+    },
 })

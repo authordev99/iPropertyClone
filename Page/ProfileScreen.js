@@ -34,7 +34,7 @@ export default function ProfileScreen() {
                     <FlatList
                         data={menuList}
                         renderItem={renderItem}
-                        keyExtractor={item => item.id}
+                        keyExtractor={item => item.title}
                         ListHeaderComponent={renderHeader} />
                 </View>
             </SafeAreaView>
