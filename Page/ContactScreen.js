@@ -5,9 +5,9 @@ import { openCall, openWhatsapp, openSmsUrl } from "../Utils/Utils";
 
 export default class ContactScreen extends Component {
     state = {
-        contact: this.props.navigation.state.params.contact,
-        title: this.props.navigation.state.params.title,
-        number: this.props.navigation.state.params.number
+        contact: this.props.route.params.contact,
+        title: this.props.route.params.title,
+        number: this.props.route.params.number
     }
 
     call = () => {
