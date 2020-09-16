@@ -5,16 +5,17 @@ import ListItemProperty from "../Component/ListItemProperty";
 import RBSheet from "react-native-raw-bottom-sheet";
 
 class PropertyListScreen extends Component {
-
+   
     back = () => {
         this.props.navigation.goBack()
     }
     filter = () => {
-        this.props.navigation.navigate('Filter')
+        this.props.navigation.navigate('Filter',{isBuyFilter : this.state.isBuyFilter})
     }
     state = {
         propertyList: [],
-        loading: true
+        loading: true,
+        isBuyFilter :  this.props.route.params.isBuyFilter,
     }
 
     onSearchChange(text) {

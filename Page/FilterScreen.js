@@ -5,10 +5,11 @@ import { SegmentedControls } from 'react-native-radio-buttons'
 import GlobalState from '../Utils/GlobalState';
 import { ScrollView } from 'react-native-gesture-handler';
 
-export default function FilterScreen({ navigation }) {
+export default function FilterScreen({ route,navigation }) {
+    const { isBuyFilter } = route.params;
 
     const initialChannel = {
-        isBuyChannel: true
+        isBuyChannel: isBuyFilter
     }
 
 
@@ -92,7 +93,7 @@ export default function FilterScreen({ navigation }) {
 
 
                     <View style={styles.searchButton}>
-                        <Button title='SEARCH' color='white' />
+                        <Button title='SEARCH' color='white' onPress={()=>navigation.navigate('ListScreen',{isBuyFilter : buyRentState.isBuyChannel})} />
                     </View>
 
                 </SafeAreaView>

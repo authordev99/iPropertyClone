@@ -232,7 +232,7 @@ class Banner extends Component {
 
                     <View style={styles.searchContainer}>
                         <Icon name="search" size={18} />
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('ListScreen')}><Text style={{ marginStart: 8 }}>Search for properties</Text></TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('Filter',{isBuyFilter : this.state.channelBuySelected})}><Text style={{ marginStart: 8 }}>Search for properties</Text></TouchableOpacity>
                     </View>
                 </View>
             </View>
@@ -240,11 +240,6 @@ class Banner extends Component {
     }
 
 }
-
-var initialElements = ['HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello', 'Hi', '00', 'Helo', 'Hi', '00', 'Hello', 'Hi', '00']
-
-
-
 
 const styles = StyleSheet.create({
     homeBanner: {
